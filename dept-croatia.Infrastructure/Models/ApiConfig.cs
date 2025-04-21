@@ -13,11 +13,15 @@
 
         //Endpoints
         public string DiscoverMovies { get; set; } = string.Empty;
+        public string SearchMovies {  get; set; } = string.Empty;
     }
 
     public class Youtube
     {
         public string YoutubeBaseUrl { get; set; } = string.Empty;
         public string YoutubeApiKey { get; set; } = string.Empty;
+
+        //Endpoints
+        public string Search {  get; set; } = string.Empty;
     }
 }

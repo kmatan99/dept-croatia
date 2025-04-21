@@ -7,9 +7,9 @@ namespace dept_croatia.Infrastructure.Extensions
 {
     public static class HttpExtension
     {
-        public async static Task<HttpResponseMessage> GetWithFiltersAsync(this HttpClient client, string requestUrl, FilterOptions filterOptions)
+        public async static Task<HttpResponseMessage> GetWithFiltersAsync<T>(this HttpClient client, string requestUrl, T filterOptions, string? apiKey = null)
         {
-            var queryParams = ConstructQueryParams(filterOptions);
+            var queryParams = ConstructQueryParams(filterOptions, apiKey);
 
             if (queryParams.Count > 0)
             {
@@ -47,9 +47,14 @@ namespace dept_croatia.Infrastructure.Extensions
             }
         }
 
-        private static List<string> ConstructQueryParams(FilterOptions filterOptions) 
+        private static List<string> ConstructQueryParams<T>(T filterOptions, string? apiKey) 
         {
             var queryParams = new List<string>();
+
+            if (!string.IsNullOrWhiteSpace(apiKey))
+            {
+                queryParams.Add($"key={apiKey}");
+            }
 
             if (filterOptions is not null) 
             {
@@ -58,6 +63,9 @@ namespace dept_croatia.Infrastructure.Extensions
                     var value = property.GetValue(filterOptions);
 
                     if (value == null)
+                        continue;
+
+                    if (value is string paramValue && string.IsNullOrWhiteSpace(paramValue))
                         continue;
 
                     var query = value switch

@@ -1,10 +1,9 @@
-﻿using System.Reflection.Metadata.Ecma335;
-
-namespace dept_croatia.Infrastructure.Models
+﻿namespace dept_croatia.Infrastructure.Filters
 {
-    public class FilterOptions
+    public class MovieDbFilters
     {
-        public string? Title { get; set; }
+        // Query respresents searching by title
+        public string? Query { get; set; }
         public string? Language { get; set; } = "en-US";
         public string? SortBy { get; set; } = "popularity.desc";
         public string? WithKeywords { get; set; }
@@ -12,12 +11,12 @@ namespace dept_croatia.Infrastructure.Models
 
         public bool ShouldCache()
         {
-            if (!string.IsNullOrWhiteSpace(Title))
+            if (!string.IsNullOrWhiteSpace(Query))
                 return false;
 
             return !Year.HasValue &&
                 string.IsNullOrWhiteSpace(WithKeywords) &&
-                string.IsNullOrWhiteSpace(Language) &&
+                Language == "en-US" &&
                 SortBy == "popularity.desc";
         }
     }

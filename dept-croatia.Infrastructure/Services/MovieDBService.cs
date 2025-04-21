@@ -1,5 +1,6 @@
 ﻿using dept_croatia.Infrastructure.Contracts;
 using dept_croatia.Infrastructure.Extensions;
+using dept_croatia.Infrastructure.Filters;
 using dept_croatia.Infrastructure.Models;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
@@ -23,24 +24,28 @@ namespace dept_croatia.Infrastructure.Services
             _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {options.Value.MovieDB.MovieDBApiToken}");
         }
 
-        public async Task<MovieSearchResult> GetMovies(FilterOptions filterOptions)
+        public async Task<MovieSearchResult?> GetMovies(MovieDbFilters filterOptions)
         {
             if (filterOptions.ShouldCache())
             {
                 return await _memoryCache.GetOrCreateAsync("discover-default", async entry =>
                 {
-                    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(90);
+                    entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromDays(30);
                     return await SendGetMoviesRequest();
                 });
             }
-            else {
+            else 
+            {
                 return await SendGetMoviesRequest(filterOptions);
             }
         }
 
-        private async Task<MovieSearchResult> SendGetMoviesRequest(FilterOptions filterOptions = null)
+        private async Task<MovieSearchResult> SendGetMoviesRequest(MovieDbFilters filterOptions = null)
         {
-            var response = await _httpClient.GetWithFiltersAsync(_options.Value.MovieDB.DiscoverMovies, filterOptions);
+            var movieDbConfig = _options.Value.MovieDB;
+            var endpoint = filterOptions.Query == null ? movieDbConfig.DiscoverMovies : movieDbConfig.SearchMovies;
+
+            var response = await _httpClient.GetWithFiltersAsync(endpoint, filterOptions);
             response.EnsureSuccessStatusCode();
 
             return await response.Content.ReadFromStream<MovieSearchResult>();
