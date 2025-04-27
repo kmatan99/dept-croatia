@@ -3,7 +3,6 @@
     public class ApiConfig
     {
         public required MovieDB MovieDB { get; set; }
-        public required Youtube Youtube { get; set; }
     }
 
     public class MovieDB
@@ -14,14 +13,6 @@
         //Endpoints
         public string DiscoverMovies { get; set; } = string.Empty;
         public string SearchMovies {  get; set; } = string.Empty;
-    }
-
-    public class Youtube
-    {
-        public string YoutubeBaseUrl { get; set; } = string.Empty;
-        public string YoutubeApiKey { get; set; } = string.Empty;
-
-        //Endpoints
-        public string Search {  get; set; } = string.Empty;
+        public string Videos {  get; set; } = string.Empty;
     }
 }
