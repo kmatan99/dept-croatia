@@ -19,10 +19,7 @@ builder.Services.AddScoped<ISearchService, SearchService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddMemoryCache(options =>
-{
-    options.SizeLimit = 20 * 1024 * 1024;
-});
+builder.Services.AddMemoryCache();
 
 builder.Services.Configure<ApiConfig>(builder.Configuration.GetSection("Api"));
 

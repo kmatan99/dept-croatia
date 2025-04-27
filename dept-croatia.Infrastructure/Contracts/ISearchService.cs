@@ -5,6 +5,6 @@ namespace dept_croatia.Infrastructure.Contracts
 {
     public interface ISearchService
     {
-        Task<List<AggregatedResult>> GetSearchResult(MovieDbFilters filters, int page = 1, int pageSize = 10);
+        Task<List<AggregatedResult>> GetSearchResult(MovieDbFilters filters, int pageSize = 10);
     }
 }

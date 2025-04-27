@@ -14,7 +14,7 @@ namespace dept_croatia.Infrastructure.Services
             _movieDBService = movieDBService;
         }
 
-        public async Task<List<AggregatedResult>> GetSearchResult(MovieDbFilters filters, int page = 1, int pageSize = 10)
+        public async Task<List<AggregatedResult>> GetSearchResult(MovieDbFilters filters, int pageSize = 10)
         {
             try 
             {
@@ -23,7 +23,7 @@ namespace dept_croatia.Infrastructure.Services
                 if (movieDbResult is null)
                     return [];
 
-                var pagedMovies = movieDbResult.Movies.Page(page, pageSize);
+                var pagedMovies = movieDbResult.Movies.Page(filters.Page, pageSize);
                 var movieIds = pagedMovies.Select(m => m.MovieId).ToList();
                 var associatedVideos = await _movieDBService.GetTrailers(movieIds);
 
@@ -46,7 +46,7 @@ namespace dept_croatia.Infrastructure.Services
                 if (trailer != null)
                 {
                     var aggregatedResult = new AggregatedResult
-                    {
+                    {   
                         MovieInfo = movie,
                         TrailerInfo = trailer
                     };

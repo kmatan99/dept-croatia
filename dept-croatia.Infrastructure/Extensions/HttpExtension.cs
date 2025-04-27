@@ -65,6 +65,9 @@ namespace dept_croatia.Infrastructure.Extensions
                     if (value == null)
                         continue;
 
+                    if (property.Name.ToLower() == "page")
+                        continue;
+
                     if (value is string paramValue && string.IsNullOrWhiteSpace(paramValue))
                         continue;
 
