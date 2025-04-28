@@ -10,3 +10,5 @@ Things to implement:
         - Input validation is currently minimal or not comprehensive.
 
     - Specific Movie detail/info page endpoint 
+
+This is completely unfinished but it was already overdue, just didn't have the time to commit to everything the task required but still wanted to deliver something.
